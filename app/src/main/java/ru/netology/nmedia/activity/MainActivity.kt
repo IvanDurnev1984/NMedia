@@ -18,15 +18,16 @@ class MainActivity : AppCompatActivity() {
 
         val viewModel: PostViewModel by viewModels()
 
-        val adapter = PostsAdapter (
-            {viewModel.likeById(it.id)},
-            {viewModel.repostById(it.id)},
-            {viewModel.viewingById(it.id)}
+        val postsAdapter = PostsAdapter (
+            onLikeListener = {viewModel.likeById(it.id)},
+            onShareListener = {viewModel.repostById(it.id)},
+            onViewingListener = {viewModel.viewingById(it.id)}
         )
-        binding.rvPostRecyclerView.adapter = adapter
+        binding.rvPostRecyclerView.adapter = postsAdapter
 
         viewModel.data.observe(this) { posts ->
-            adapter.postsList = posts
+            postsAdapter.submitList(posts)
         }
     }
 }
+

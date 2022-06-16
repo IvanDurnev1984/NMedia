@@ -1,15 +1,14 @@
 package ru.netology.nmedia.adapter
 
-import android.os.Parcel
-import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.ListAdapter
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import ru.netology.nmedia.R
 import ru.netology.nmedia.databinding.CardPostBinding
 import ru.netology.nmedia.dto.Post
+
 typealias OnLikeListener = (post: Post) -> Unit
 typealias OnShareListener = (post: Post) -> Unit
 typealias OnViewingListener = (post: Post) -> Unit
@@ -18,22 +17,29 @@ class PostsAdapter(
     private val onLikeListener: OnLikeListener,
     private val onShareListener: OnShareListener,
     private val onViewingListener: OnViewingListener
-) : RecyclerView.Adapter<PostViewHolder>() {
-    var postsList = emptyList<Post>()
-        set(value) {
-            field = value
-            notifyDataSetChanged()
-        }
+) : ListAdapter<Post, PostViewHolder>(PostDiffCallBack()) {
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
-        val binding = CardPostBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = CardPostBinding.inflate(LayoutInflater.from(parent.context),parent,false)
         return PostViewHolder(binding, onLikeListener, onShareListener, onViewingListener)
     }
+
     override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
-        val post = postsList[position]
-        holder.bind(post)
+        holder.bind(getItem(position))
     }
-    override fun getItemCount(): Int = postsList.size
+
 }
+
+class PostDiffCallBack : DiffUtil.ItemCallback<Post>() {
+    override fun areItemsTheSame(oldItem: Post, newItem: Post): Boolean {
+        return oldItem.id == newItem.id
+    }
+
+    override fun areContentsTheSame(oldItem: Post, newItem: Post): Boolean {
+        return oldItem == newItem
+    }
+}
+
 class PostViewHolder(
     private val binding: CardPostBinding,
     private val onLikeListener: OnLikeListener,
@@ -63,12 +69,15 @@ class PostViewHolder(
         }
     }
 }
+
+
 fun dischargesReduction(click: Int, t: Int = 1000): String {
     return when (click) {
         in t until t*t -> "k"
         else -> "M"
     }
 }
+
 fun countMyClick(click:Int, t:Int = 1000): String {
     return when (click) {
         in 1 until t -> click.toString()
