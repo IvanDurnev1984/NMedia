@@ -41,10 +41,6 @@ class PostDiffCallBack : DiffUtil.ItemCallback<Post>() {
     override fun areContentsTheSame(oldItem: Post, newItem: Post): Boolean {
         return oldItem == newItem
     }
-
-    override fun  getChangePayload(oldItem: Post, newItem: Post): Any? {
-        return super.getChangePayload(oldItem, newItem)
-    }
 }
 
 class PostViewHolder(
@@ -56,19 +52,18 @@ class PostViewHolder(
             authorTextView.text = post.author
             publishedTextView.text = post.published
             contentTextView.text = post.content
-            likeTextView.text = countMyClick(post.likesCount)
-            repostsTextView.text = countMyClick(post.repostsCount)
-            viewsTextView.text = countMyClick(post.viewingCount)
-            likeImageView.setImageResource(
-                if (post.likedByMe) R.drawable.ic_liked_favorite_24 else R.drawable.ic_baseline_favorite_border_24
-            )
-            likeImageView.setOnClickListener {
+            shareImageButton.text = countMyClick(post.repostsCount)
+            viewsImageButton.text = countMyClick(post.viewingCount)
+            likeImageButton.isChecked = post.likedByMe
+            likeImageButton.text = countMyClick(post.likesCount)
+
+            likeImageButton.setOnClickListener {
                 onInteractionListener.onLike(post)
             }
-            repostsImageView.setOnClickListener {
+            shareImageButton.setOnClickListener {
                 onInteractionListener.onShare(post)
             }
-            viewsImageView.setOnClickListener {
+            viewsImageButton.setOnClickListener {
                 onInteractionListener.onViewing(post)
             }
             postMenuImageView.setOnClickListener {
