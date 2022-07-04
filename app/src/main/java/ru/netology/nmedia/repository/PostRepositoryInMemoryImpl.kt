@@ -14,24 +14,27 @@ class PostRepositoryInMemoryImpl : PostRepository {
                                         author = "Нетология. Университет интернет-профессий",
                                         published = "21 мая в 18:36",
                                         content = "Привет, это новая Нетология! Когда-то Нетология начиналась с интенсивов по онлайн-маркетингу. Затем появились курсы по дизайну, разработке, аналитике и управлению. Мы растем сами и помогаем расти студентам: от новичков до уверенных профессионалов. Но самое важное остаётся с нами: мы верим, что в каждом уже есть сила, которая заставляет хотеть больше, целиться выше, бежать быстрее. Наша миссия - помочь встать на путь роста и начать цепочку перемен http://netolo.gy/fyb",
+                                        videoInPost = "https://i.ytimg.com/vi/WhWc3b3KhnY/maxresdefault.jpg",
                                         likesCount = 2099999,
-                                        repostsCount = 1099,
+                                        shareCount = 1099,
                                         viewingCount = 999999,
                                         likedByMe = false),
                                     Post(id = nId++,
                                         author = "Нетология. Университет интернет-профессий",
                                         published = "22 мая в 18:36",
                                         content = "Привет, это новая Нетология! Когда-то Нетология начиналась с интенсивов по онлайн-маркетингу. Затем появились курсы по дизайну, разработке, аналитике и управлению. Мы растем сами и помогаем расти студентам: от новичков до уверенных профессионалов. Но самое важное остаётся с нами: мы верим, что в каждом уже есть сила, которая заставляет хотеть больше, целиться выше, бежать быстрее. Наша миссия - помочь встать на путь роста и начать цепочку перемен http://netolo.gy/fyb",
+                                        videoInPost = "https://youtu.be/RDHDmpA5oV4",
                                         likesCount = 999,
-                                        repostsCount = 9999999,
+                                        shareCount = 9999999,
                                         viewingCount = 999999,
                                         likedByMe = false),
                                     Post(id = nId++,
                                         author = "Нетология. Университет интернет-профессий",
                                         published = "23 мая в 18:36",
                                         content = "Привет, это новая Нетология! Когда-то Нетология начиналась с интенсивов по онлайн-маркетингу. Затем появились курсы по дизайну, разработке, аналитике и управлению. Мы растем сами и помогаем расти студентам: от новичков до уверенных профессионалов. Но самое важное остаётся с нами: мы верим, что в каждом уже есть сила, которая заставляет хотеть больше, целиться выше, бежать быстрее. Наша миссия - помочь встать на путь роста и начать цепочку перемен http://netolo.gy/fyb",
+                                        videoInPost = "https://www.youtube.com/watch?v=WhWc3b3KhnY",
                                         likesCount = 2999,
-                                        repostsCount = 21999,
+                                        shareCount = 21999,
                                         viewingCount = 2999999,
                                         likedByMe = false)
                                 ).reversed()
@@ -66,10 +69,10 @@ class PostRepositoryInMemoryImpl : PostRepository {
         data.value = posts
     }
 
-    override fun repostById(id: Int) {
+    override fun shareById(id: Int) {
         val posts = data.value.orEmpty().toMutableList()
         val index = posts.indexOf(posts.first{it.id == id})
-        posts[index] = posts[index].copy(repostsCount = posts[index].repostsCount+1)
+        posts[index] = posts[index].copy(shareCount = posts[index].shareCount+1)
         data.value = posts
     }
 

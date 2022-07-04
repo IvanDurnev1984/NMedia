@@ -1,14 +1,19 @@
 package ru.netology.nmedia.adapter
 
+import android.net.Uri
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.PopupMenu
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import ru.netology.nmedia.R
 import ru.netology.nmedia.databinding.CardPostBinding
 import ru.netology.nmedia.dto.Post
+import java.lang.System.load
 
 interface OnInteractionListener {
     fun onLike(post: Post)
@@ -16,6 +21,7 @@ interface OnInteractionListener {
     fun onViewing(post: Post)
     fun onPostEdit(post: Post)
     fun onPostRemove(post: Post)
+    fun onPlayVideo(post: Post)
 }
 
 class PostsAdapter(
@@ -52,11 +58,19 @@ class PostViewHolder(
             authorTextView.text = post.author
             publishedTextView.text = post.published
             contentTextView.text = post.content
-            shareImageButton.text = countMyClick(post.repostsCount)
+            videoContent.setImageURI(Uri.parse(post.videoInPost))
+            shareImageButton.text = countMyClick(post.shareCount)
             viewsImageButton.text = countMyClick(post.viewingCount)
             likeImageButton.isChecked = post.likedByMe
             likeImageButton.text = countMyClick(post.likesCount)
+            videoGroup.isVisible = post.videoInPost.isNotBlank()
 
+            playVideoButton.setOnClickListener {
+                onInteractionListener.onPlayVideo(post)
+            }
+            videoGroup.setOnClickListener {
+                onInteractionListener.onPlayVideo(post)
+            }
             likeImageButton.setOnClickListener {
                 onInteractionListener.onLike(post)
             }

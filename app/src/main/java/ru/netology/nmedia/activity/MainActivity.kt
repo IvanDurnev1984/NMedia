@@ -1,26 +1,30 @@
 package ru.netology.nmedia.activity
 
+import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
-import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.lifecycle.observe
 import ru.netology.nmedia.R
 import ru.netology.nmedia.adapter.OnInteractionListener
 import ru.netology.nmedia.adapter.PostsAdapter
 import ru.netology.nmedia.databinding.ActivityMainBinding
 import ru.netology.nmedia.dto.Post
-import ru.netology.nmedia.utils.AndroidUtils
+import ru.netology.nmedia.utils.showMyMessage
 import ru.netology.nmedia.viewmodel.PostViewModel
 
 class MainActivity : AppCompatActivity() {
+
+    private val postRequestCode = 1
+
+    private val viewModel: PostViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val viewModel: PostViewModel by viewModels()
+
 
         val postsAdapter = PostsAdapter (object : OnInteractionListener {
             override fun onLike(post: Post) {
@@ -28,7 +32,18 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onShare(post: Post) {
-                viewModel.repostById(post.id)
+                val intent = Intent(Intent.ACTION_SEND)
+                    .setType("text/plane")
+                    .putExtra(Intent.EXTRA_TEXT,post.content)
+                    .let {
+                        Intent.createChooser(it,null)
+                    }
+                if (intent.resolveActivity(packageManager) != null) {
+                    startActivity(intent)
+                } else {
+                    showMyMessage(R.string.no_app_to_share)
+                }
+                viewModel.shareById(post.id)
             }
 
             override fun onViewing(post: Post) {
@@ -36,11 +51,23 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onPostEdit(post: Post) {
-                viewModel.editPost(post)
+                val intentPostEdit = Intent(this@MainActivity,PostActivity::class.java)
+                    intentPostEdit.putExtra("post", post)
+                startActivityForResult(intentPostEdit,postRequestCode)
             }
 
             override fun onPostRemove(post: Post) {
                 viewModel.removeById(post.id)
+            }
+
+            override fun onPlayVideo(post: Post) {
+                Intent(Intent.ACTION_VIEW, Uri.parse(post.videoInPost)).takeIf {
+                    it.resolveActivity(packageManager) != null
+                }?.also {
+                    startActivity(it)
+                } ?: run {this@MainActivity
+                    showMyMessage(R.string.no_app_to_play)
+                }
             }
         })
 
@@ -54,41 +81,28 @@ class MainActivity : AppCompatActivity() {
             if (post.id == 0) {
                 return@observe
             }
-            binding.cancelChangeImageButton.visibility = View.VISIBLE
-            with(binding.content) {
-                requestFocus()
-                setText(post.content)
-            }
         }
 
-        binding.cancelChangeImageButton.setOnClickListener{
-            with(binding.content) {
-                viewModel.savePost()
-                binding.cancelChangeImageButton.visibility = View.GONE
-                setText("")
-                clearFocus()
-                AndroidUtils.hideKeyboard(this)
+        binding.fabAddPost.setOnClickListener {
+            val post: Post = viewModel.edited.value.let { post ->
+               if (post?.id == 0) post else return@setOnClickListener
             }
+            val intentNewPost = Intent(this@MainActivity,PostActivity::class.java)
+            intentNewPost.putExtra("post", post)
+            startActivityForResult(intentNewPost,postRequestCode)
         }
+    }
 
-        binding.saveImageButton.setOnClickListener {
-            with(binding.content) {
-                if (text.isNullOrBlank()) {
-                    Toast.makeText(
-                        this@MainActivity,
-                        R.string.text_not_be_empty,
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    return@setOnClickListener
-                }
-                viewModel.changeContent(text.toString())
-                viewModel.savePost()
-                binding.cancelChangeImageButton.visibility = View.GONE
-                setText("")
-                clearFocus()
-                AndroidUtils.hideKeyboard(this)
-            }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == postRequestCode && resultCode == RESULT_OK && data != null) {
+            val post = data.getParcelableExtra<Post>(PostActivity.POST_KEY) ?: return
+
+
+            viewModel.editPost(post)
+            viewModel.changeContent(post.content)
+            viewModel.savePost()
         }
     }
 }
-
