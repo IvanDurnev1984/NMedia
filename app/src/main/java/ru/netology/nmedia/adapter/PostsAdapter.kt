@@ -2,9 +2,7 @@ package ru.netology.nmedia.adapter
 
 import android.net.Uri
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.PopupMenu
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.ListAdapter
@@ -13,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.netology.nmedia.R
 import ru.netology.nmedia.databinding.CardPostBinding
 import ru.netology.nmedia.dto.Post
-import java.lang.System.load
 
 interface OnInteractionListener {
     fun onLike(post: Post)
@@ -23,32 +20,25 @@ interface OnInteractionListener {
     fun onPostRemove(post: Post)
     fun onPlayVideo(post: Post)
 }
-
 class PostsAdapter(
     private val onInteractionListener: OnInteractionListener
 ) : ListAdapter<Post, PostViewHolder>(PostDiffCallBack()) {
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
         val binding = CardPostBinding.inflate(LayoutInflater.from(parent.context),parent,false)
         return PostViewHolder(binding, onInteractionListener)
     }
-
     override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
-
 }
-
 class PostDiffCallBack : DiffUtil.ItemCallback<Post>() {
     override fun areItemsTheSame(oldItem: Post, newItem: Post): Boolean {
         return oldItem.id == newItem.id
     }
-
     override fun areContentsTheSame(oldItem: Post, newItem: Post): Boolean {
         return oldItem == newItem
     }
 }
-
 class PostViewHolder(
     private val binding: CardPostBinding,
     private val onInteractionListener: OnInteractionListener
@@ -64,7 +54,6 @@ class PostViewHolder(
             likeImageButton.isChecked = post.likedByMe
             likeImageButton.text = countMyClick(post.likesCount)
             videoGroup.isVisible = post.videoInPost.isNotBlank()
-
             playVideoButton.setOnClickListener {
                 onInteractionListener.onPlayVideo(post)
             }
@@ -95,22 +84,18 @@ class PostViewHolder(
                             }
                             else -> false
                         }
-
                     }
                 }.show()
             }
         }
     }
 }
-
-
 fun dischargesReduction(click: Int, t: Int = 1000): String {
     return when (click) {
         in t until t*t -> "k"
         else -> "M"
     }
 }
-
 fun countMyClick(click:Int, t:Int = 1000): String {
     return when (click) {
         in 0 until t -> click.toString()
