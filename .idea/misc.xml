@@ -3,10 +3,6 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/555/app/src/main/res/layout/activity_app.xml" value="0.3473731884057971" />
-        <entry key="..\:/555/app/src/main/res/layout/fragment_card_post.xml" value="0.3473731884057971" />
-        <entry key="..\:/555/app/src/main/res/layout/fragment_feed.xml" value="0.3473731884057971" />
-        <entry key="..\:/555/app/src/main/res/layout/fragment_post.xml" value="0.3473731884057971" />
         <entry key="..\:/Users/Alexey/AndroidStudioProjects/Nmedia/app/src/main/res/drawable/ic_.xml" value="0.131" />
         <entry key="..\:/Users/Alexey/AndroidStudioProjects/Nmedia/app/src/main/res/drawable/ic_baseline_favorite_border_24.xml" value="0.131" />
         <entry key="..\:/Users/Alexey/AndroidStudioProjects/Nmedia/app/src/main/res/drawable/ic_like_selektor.xml" value="0.176" />
@@ -18,6 +14,7 @@
         <entry key="..\:/Users/user/AndroidStudioProjects/Nmedia/app/src/main/res/layout/activity_main.xml" value="0.22" />
         <entry key="..\:/Users/user/AndroidStudioProjects/Nmedia/app/src/main/res/layout/activity_post.xml" value="0.17916666666666667" />
         <entry key="..\:/Users/user/AndroidStudioProjects/Nmedia/app/src/main/res/layout/card_post.xml" value="0.22" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/Nmedia/app/src/main/res/layout/fragment_card_post.xml" value="0.15715579710144928" />
         <entry key="..\:/Users/user/AndroidStudioProjects/Nmedia/app/src/main/res/layout/fragment_feed.xml" value="0.17119565217391305" />
         <entry key="..\:/Users/user/AndroidStudioProjects/Nmedia/app/src/main/res/menu/post_popup_menu.xml" value="0.17916666666666667" />
       </map>
