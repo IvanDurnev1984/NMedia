@@ -1,4 +1,4 @@
-package ru.netology.nmedia.activity
+package ru.netology.nmedia.view.activity
 
 import android.content.Intent
 import android.net.Uri
@@ -11,10 +11,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import ru.netology.nmedia.R
-import ru.netology.nmedia.adapter.OnInteractionListener
-import ru.netology.nmedia.adapter.PostsAdapter
+import ru.netology.nmedia.view.view.adapter.OnInteractionListener
+import ru.netology.nmedia.view.view.adapter.PostsAdapter
 import ru.netology.nmedia.databinding.FragmentFeedBinding
-import ru.netology.nmedia.dto.Post
+import ru.netology.nmedia.model.dto.Post
 import ru.netology.nmedia.utils.AndroidUtils.POST_KEY
 import ru.netology.nmedia.viewmodel.PostViewModel
 
@@ -80,14 +80,14 @@ class FeedFragment : Fragment() {
         }
 
         viewModel.edited.observe(viewLifecycleOwner) { post ->
-            if (post.id == 0) {
+            if (post.id == 0L) {
                 return@observe
             }
         }
 
         binding.fabAddPost.setOnClickListener {
             val post: Post = viewModel.edited.value.let { post ->
-                if (post?.id == 0) post else return@setOnClickListener
+                if (post?.id == 0L) post else return@setOnClickListener
             }
             findNavController().navigate(
                 R.id.action_feedFragment_to_postFragment,
