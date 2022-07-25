@@ -8,6 +8,5 @@
 
 1. Задача достаточно простая: мигрируйте всё на Room, обязательно сохранив при этом работоспособность приложения.
 
-
-https://user-images.githubusercontent.com/99552214/180844488-83f108ff-efdf-4b79-ac3c-f971a4800e3f.mp4
+https://user-images.githubusercontent.com/99552214/180845762-73b240be-1b4e-4fb8-a581-cfcdb3068a4c.mp4
 
